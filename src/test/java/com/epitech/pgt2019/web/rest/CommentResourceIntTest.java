@@ -3,6 +3,7 @@ package com.epitech.pgt2019.web.rest;
 import com.epitech.pgt2019.FeedServiceApp;
 
 import com.epitech.pgt2019.domain.Comment;
+import com.epitech.pgt2019.domain.UserFeed;
 import com.epitech.pgt2019.repository.CommentRepository;
 import com.epitech.pgt2019.service.CommentService;
 import com.epitech.pgt2019.service.dto.CommentDTO;
@@ -100,6 +101,10 @@ public class CommentResourceIntTest {
             .creationDate(DEFAULT_CREATION_DATE)
             .lastModificationDate(DEFAULT_LAST_MODIFICATION_DATE)
             .content(DEFAULT_CONTENT);
+        // Add required entity
+        UserFeed userFeed = UserFeedResourceIntTest.createEntity();
+        userFeed.setId("fixed-id-for-tests");
+        comment.setUserFeed(userFeed);
         return comment;
     }
 

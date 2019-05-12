@@ -1,7 +1,19 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "feedService",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "userFeed",
+            "otherEntityName": "userFeed",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "comment",
+            "otherEntityRelationshipNameUndefined": true
+        }
+    ],
     "fields": [
         {
             "fieldName": "creationDate",
