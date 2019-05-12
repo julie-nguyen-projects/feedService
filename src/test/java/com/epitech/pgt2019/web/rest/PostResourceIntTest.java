@@ -3,6 +3,7 @@ package com.epitech.pgt2019.web.rest;
 import com.epitech.pgt2019.FeedServiceApp;
 
 import com.epitech.pgt2019.domain.Post;
+import com.epitech.pgt2019.domain.UserFeed;
 import com.epitech.pgt2019.repository.PostRepository;
 import com.epitech.pgt2019.service.PostService;
 import com.epitech.pgt2019.service.dto.PostDTO;
@@ -100,6 +101,10 @@ public class PostResourceIntTest {
             .creationDate(DEFAULT_CREATION_DATE)
             .lastModificationDate(DEFAULT_LAST_MODIFICATION_DATE)
             .content(DEFAULT_CONTENT);
+        // Add required entity
+        UserFeed userFeed = UserFeedResourceIntTest.createEntity();
+        userFeed.setId("fixed-id-for-tests");
+        post.setUserFeed(userFeed);
         return post;
     }
 

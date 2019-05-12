@@ -20,6 +20,8 @@ public class PostDTO implements Serializable {
     private String content;
 
 
+    private String userFeedId;
+
     public String getId() {
         return id;
     }
@@ -52,6 +54,14 @@ public class PostDTO implements Serializable {
         this.content = content;
     }
 
+    public String getUserFeedId() {
+        return userFeedId;
+    }
+
+    public void setUserFeedId(String userFeedId) {
+        this.userFeedId = userFeedId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -80,6 +90,7 @@ public class PostDTO implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", lastModificationDate='" + getLastModificationDate() + "'" +
             ", content='" + getContent() + "'" +
+            ", userFeed=" + getUserFeedId() +
             "}";
     }
 }
