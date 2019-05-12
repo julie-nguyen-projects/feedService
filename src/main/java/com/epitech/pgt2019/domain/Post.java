@@ -1,6 +1,7 @@
 package com.epitech.pgt2019.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -32,6 +33,11 @@ public class Post implements Serializable {
     @NotNull
     @Field("content")
     private String content;
+
+    @DBRef
+    @Field("userFeed")
+    @JsonIgnoreProperties("posts")
+    private UserFeed userFeed;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
@@ -79,6 +85,19 @@ public class Post implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public UserFeed getUserFeed() {
+        return userFeed;
+    }
+
+    public Post userFeed(UserFeed userFeed) {
+        this.userFeed = userFeed;
+        return this;
+    }
+
+    public void setUserFeed(UserFeed userFeed) {
+        this.userFeed = userFeed;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

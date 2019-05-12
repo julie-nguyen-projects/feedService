@@ -8,10 +8,16 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Comment and its DTO CommentDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {UserFeedMapper.class, PostMapper.class})
 public interface CommentMapper extends EntityMapper<CommentDTO, Comment> {
 
+    @Mapping(source = "userFeed.id", target = "userFeedId")
+    @Mapping(source = "post.id", target = "postId")
+    CommentDTO toDto(Comment comment);
 
+    @Mapping(source = "userFeedId", target = "userFeed")
+    @Mapping(source = "postId", target = "post")
+    Comment toEntity(CommentDTO commentDTO);
 
     default Comment fromId(String id) {
         if (id == null) {
