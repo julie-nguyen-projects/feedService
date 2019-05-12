@@ -39,6 +39,11 @@ public class Comment implements Serializable {
     @JsonIgnoreProperties("comments")
     private UserFeed userFeed;
 
+    @DBRef
+    @Field("post")
+    @JsonIgnoreProperties("comments")
+    private Post post;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
         return id;
@@ -98,6 +103,19 @@ public class Comment implements Serializable {
 
     public void setUserFeed(UserFeed userFeed) {
         this.userFeed = userFeed;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public Comment post(Post post) {
+        this.post = post;
+        return this;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

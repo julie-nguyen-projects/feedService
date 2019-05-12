@@ -22,6 +22,8 @@ public class CommentDTO implements Serializable {
 
     private String userFeedId;
 
+    private String postId;
+
     public String getId() {
         return id;
     }
@@ -62,6 +64,14 @@ public class CommentDTO implements Serializable {
         this.userFeedId = userFeedId;
     }
 
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -91,6 +101,7 @@ public class CommentDTO implements Serializable {
             ", lastModificationDate='" + getLastModificationDate() + "'" +
             ", content='" + getContent() + "'" +
             ", userFeed=" + getUserFeedId() +
+            ", post=" + getPostId() +
             "}";
     }
 }

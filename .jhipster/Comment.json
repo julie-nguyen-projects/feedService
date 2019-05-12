@@ -11,6 +11,17 @@
             ],
             "otherEntityField": "id",
             "otherEntityRelationshipName": "comment",
+            "otherEntityRelationshipNameUndefined": false
+        },
+        {
+            "relationshipName": "post",
+            "otherEntityName": "post",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id",
+            "otherEntityRelationshipName": "comment",
             "otherEntityRelationshipNameUndefined": true
         }
     ],
