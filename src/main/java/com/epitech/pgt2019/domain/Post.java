@@ -9,26 +9,18 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
 
 /**
  * A Post.
  */
 @Document(collection = "post")
-public class Post implements Serializable {
+public class Post extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
     @Id
     private String id;
-
-    @NotNull
-    @Field("creation_date")
-    private LocalDate creationDate;
-
-    @Field("last_modification_date")
-    private LocalDate lastModificationDate;
 
     @NotNull
     @Field("content")
@@ -46,32 +38,6 @@ public class Post implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public Post creationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-        return this;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDate getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public Post lastModificationDate(LocalDate lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
-        return this;
-    }
-
-    public void setLastModificationDate(LocalDate lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
     }
 
     public String getContent() {
@@ -125,8 +91,6 @@ public class Post implements Serializable {
     public String toString() {
         return "Post{" +
             "id=" + getId() +
-            ", creationDate='" + getCreationDate() + "'" +
-            ", lastModificationDate='" + getLastModificationDate() + "'" +
             ", content='" + getContent() + "'" +
             "}";
     }

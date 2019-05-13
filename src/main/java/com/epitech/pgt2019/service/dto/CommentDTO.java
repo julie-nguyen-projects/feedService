@@ -1,5 +1,4 @@
 package com.epitech.pgt2019.service.dto;
-import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,11 +9,6 @@ import java.util.Objects;
 public class CommentDTO implements Serializable {
 
     private String id;
-
-    @NotNull
-    private LocalDate creationDate;
-
-    private LocalDate lastModificationDate;
 
     @NotNull
     private String content;
@@ -30,22 +24,6 @@ public class CommentDTO implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public LocalDate getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDate creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDate getLastModificationDate() {
-        return lastModificationDate;
-    }
-
-    public void setLastModificationDate(LocalDate lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
     }
 
     public String getContent() {
@@ -97,8 +75,6 @@ public class CommentDTO implements Serializable {
     public String toString() {
         return "CommentDTO{" +
             "id=" + getId() +
-            ", creationDate='" + getCreationDate() + "'" +
-            ", lastModificationDate='" + getLastModificationDate() + "'" +
             ", content='" + getContent() + "'" +
             ", userFeed=" + getUserFeedId() +
             ", post=" + getPostId() +

@@ -24,8 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 
@@ -43,12 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FeedServiceApp.class)
 public class PostResourceIntTest {
-
-    private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
-
-    private static final LocalDate DEFAULT_LAST_MODIFICATION_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_LAST_MODIFICATION_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final String DEFAULT_CONTENT = "AAAAAAAAAA";
     private static final String UPDATED_CONTENT = "BBBBBBBBBB";
@@ -98,8 +90,6 @@ public class PostResourceIntTest {
      */
     public static Post createEntity() {
         Post post = new Post()
-            .creationDate(DEFAULT_CREATION_DATE)
-            .lastModificationDate(DEFAULT_LAST_MODIFICATION_DATE)
             .content(DEFAULT_CONTENT);
         // Add required entity
         UserFeed userFeed = UserFeedResourceIntTest.createEntity();
@@ -129,8 +119,6 @@ public class PostResourceIntTest {
         List<Post> postList = postRepository.findAll();
         assertThat(postList).hasSize(databaseSizeBeforeCreate + 1);
         Post testPost = postList.get(postList.size() - 1);
-        assertThat(testPost.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
-        assertThat(testPost.getLastModificationDate()).isEqualTo(DEFAULT_LAST_MODIFICATION_DATE);
         assertThat(testPost.getContent()).isEqualTo(DEFAULT_CONTENT);
     }
 
@@ -151,24 +139,6 @@ public class PostResourceIntTest {
         // Validate the Post in the database
         List<Post> postList = postRepository.findAll();
         assertThat(postList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    public void checkCreationDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = postRepository.findAll().size();
-        // set the field null
-        post.setCreationDate(null);
-
-        // Create the Post, which fails.
-        PostDTO postDTO = postMapper.toDto(post);
-
-        restPostMockMvc.perform(post("/api/posts")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(postDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Post> postList = postRepository.findAll();
-        assertThat(postList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -199,8 +169,6 @@ public class PostResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(post.getId())))
-            .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].lastModificationDate").value(hasItem(DEFAULT_LAST_MODIFICATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())));
     }
     
@@ -214,8 +182,6 @@ public class PostResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(post.getId()))
-            .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
-            .andExpect(jsonPath("$.lastModificationDate").value(DEFAULT_LAST_MODIFICATION_DATE.toString()))
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()));
     }
 
@@ -236,8 +202,6 @@ public class PostResourceIntTest {
         // Update the post
         Post updatedPost = postRepository.findById(post.getId()).get();
         updatedPost
-            .creationDate(UPDATED_CREATION_DATE)
-            .lastModificationDate(UPDATED_LAST_MODIFICATION_DATE)
             .content(UPDATED_CONTENT);
         PostDTO postDTO = postMapper.toDto(updatedPost);
 
@@ -250,8 +214,6 @@ public class PostResourceIntTest {
         List<Post> postList = postRepository.findAll();
         assertThat(postList).hasSize(databaseSizeBeforeUpdate);
         Post testPost = postList.get(postList.size() - 1);
-        assertThat(testPost.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
-        assertThat(testPost.getLastModificationDate()).isEqualTo(UPDATED_LAST_MODIFICATION_DATE);
         assertThat(testPost.getContent()).isEqualTo(UPDATED_CONTENT);
     }
 
