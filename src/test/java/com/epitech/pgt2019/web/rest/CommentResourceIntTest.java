@@ -25,8 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.Validator;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 
@@ -44,12 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = FeedServiceApp.class)
 public class CommentResourceIntTest {
-
-    private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
-
-    private static final LocalDate DEFAULT_LAST_MODIFICATION_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_LAST_MODIFICATION_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final String DEFAULT_CONTENT = "AAAAAAAAAA";
     private static final String UPDATED_CONTENT = "BBBBBBBBBB";
@@ -99,8 +91,6 @@ public class CommentResourceIntTest {
      */
     public static Comment createEntity() {
         Comment comment = new Comment()
-            .creationDate(DEFAULT_CREATION_DATE)
-            .lastModificationDate(DEFAULT_LAST_MODIFICATION_DATE)
             .content(DEFAULT_CONTENT);
         // Add required entity
         UserFeed userFeed = UserFeedResourceIntTest.createEntity();
@@ -134,8 +124,6 @@ public class CommentResourceIntTest {
         List<Comment> commentList = commentRepository.findAll();
         assertThat(commentList).hasSize(databaseSizeBeforeCreate + 1);
         Comment testComment = commentList.get(commentList.size() - 1);
-        assertThat(testComment.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
-        assertThat(testComment.getLastModificationDate()).isEqualTo(DEFAULT_LAST_MODIFICATION_DATE);
         assertThat(testComment.getContent()).isEqualTo(DEFAULT_CONTENT);
     }
 
@@ -156,24 +144,6 @@ public class CommentResourceIntTest {
         // Validate the Comment in the database
         List<Comment> commentList = commentRepository.findAll();
         assertThat(commentList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    public void checkCreationDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = commentRepository.findAll().size();
-        // set the field null
-        comment.setCreationDate(null);
-
-        // Create the Comment, which fails.
-        CommentDTO commentDTO = commentMapper.toDto(comment);
-
-        restCommentMockMvc.perform(post("/api/comments")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Comment> commentList = commentRepository.findAll();
-        assertThat(commentList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -204,8 +174,6 @@ public class CommentResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId())))
-            .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
-            .andExpect(jsonPath("$.[*].lastModificationDate").value(hasItem(DEFAULT_LAST_MODIFICATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())));
     }
     
@@ -219,8 +187,6 @@ public class CommentResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(comment.getId()))
-            .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
-            .andExpect(jsonPath("$.lastModificationDate").value(DEFAULT_LAST_MODIFICATION_DATE.toString()))
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()));
     }
 
@@ -241,8 +207,6 @@ public class CommentResourceIntTest {
         // Update the comment
         Comment updatedComment = commentRepository.findById(comment.getId()).get();
         updatedComment
-            .creationDate(UPDATED_CREATION_DATE)
-            .lastModificationDate(UPDATED_LAST_MODIFICATION_DATE)
             .content(UPDATED_CONTENT);
         CommentDTO commentDTO = commentMapper.toDto(updatedComment);
 
@@ -255,8 +219,6 @@ public class CommentResourceIntTest {
         List<Comment> commentList = commentRepository.findAll();
         assertThat(commentList).hasSize(databaseSizeBeforeUpdate);
         Comment testComment = commentList.get(commentList.size() - 1);
-        assertThat(testComment.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
-        assertThat(testComment.getLastModificationDate()).isEqualTo(UPDATED_LAST_MODIFICATION_DATE);
         assertThat(testComment.getContent()).isEqualTo(UPDATED_CONTENT);
     }
 

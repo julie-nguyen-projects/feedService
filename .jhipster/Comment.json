@@ -22,21 +22,10 @@
             ],
             "otherEntityField": "id",
             "otherEntityRelationshipName": "comment",
-            "otherEntityRelationshipNameUndefined": true
+            "otherEntityRelationshipNameUndefined": false
         }
     ],
     "fields": [
-        {
-            "fieldName": "creationDate",
-            "fieldType": "LocalDate",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "lastModificationDate",
-            "fieldType": "LocalDate"
-        },
         {
             "fieldName": "content",
             "fieldType": "String",
