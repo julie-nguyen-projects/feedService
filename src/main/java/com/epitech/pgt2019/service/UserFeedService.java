@@ -34,12 +34,14 @@ public class UserFeedService {
     /**
      * Save a userFeed.
      *
+     * @param newId the new id of the userFeed
      * @param userFeedDTO the entity to save
      * @return the persisted entity
      */
-    public UserFeedDTO save(UserFeedDTO userFeedDTO) {
+    public UserFeedDTO save(String newId, UserFeedDTO userFeedDTO) {
         log.debug("Request to save UserFeed : {}", userFeedDTO);
         UserFeed userFeed = userFeedMapper.toEntity(userFeedDTO);
+        userFeed.setId(newId);
         userFeed = userFeedRepository.save(userFeed);
         return userFeedMapper.toDto(userFeed);
     }
