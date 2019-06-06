@@ -35,17 +35,18 @@ public class UserFeedResource {
     /**
      * POST  /user-feeds : Create a new userFeed.
      *
+     * @param newId the new id of the userFeed
      * @param userFeedDTO the userFeedDTO to create
      * @return the ResponseEntity with status 201 (Created) and with body the new userFeedDTO, or with status 400 (Bad Request) if the userFeed has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/user-feeds")
-    public ResponseEntity<UserFeedDTO> createUserFeed(@RequestBody UserFeedDTO userFeedDTO) throws URISyntaxException {
+    @PostMapping("/user-feeds/{newId}")
+    public ResponseEntity<UserFeedDTO> createUserFeed(@PathVariable("newId") String newId, @RequestBody UserFeedDTO userFeedDTO) throws URISyntaxException {
         log.debug("REST request to save UserFeed : {}", userFeedDTO);
         if (userFeedDTO.getId() != null) {
             throw new BadRequestAlertException("A new userFeed cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        UserFeedDTO result = userFeedService.save(userFeedDTO);
+        UserFeedDTO result = userFeedService.save(newId, userFeedDTO);
         return ResponseEntity.created(new URI("/api/user-feeds/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -60,13 +61,13 @@ public class UserFeedResource {
      * or with status 500 (Internal Server Error) if the userFeedDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PutMapping("/user-feeds")
-    public ResponseEntity<UserFeedDTO> updateUserFeed(@RequestBody UserFeedDTO userFeedDTO) throws URISyntaxException {
+    @PutMapping("/user-feeds/{newId}")
+    public ResponseEntity<UserFeedDTO> updateUserFeed(@PathVariable("newId") String newId, @RequestBody UserFeedDTO userFeedDTO) throws URISyntaxException {
         log.debug("REST request to update UserFeed : {}", userFeedDTO);
         if (userFeedDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        UserFeedDTO result = userFeedService.save(userFeedDTO);
+        UserFeedDTO result = userFeedService.save(newId, userFeedDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, userFeedDTO.getId().toString()))
             .body(result);
